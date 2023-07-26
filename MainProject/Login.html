@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login page</title>
+    <link rel="stylesheet" href="style.css"
+</head>
+<body>
+    ̌<!--Login html form-->
+    <div class="form-container">
+        <form method="post" action="" id="loginForm">
+            <h4>Login</h4>
+            <div class="error-msg" id="error-msg"></div>
+            <input type="email" id="email" name="email" placeholder="Enter your name" required>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <input type="submit" name="submit" value="Login">
+
+        </form>
+    </div>
+
+    <!--jQuery and AJAX -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $("#loginForm").submit(function(event) {
+            event.preventDefault();
+            var email = $("#email").val();
+            var password = $("#password").val();
+            var errorMsgContainer = $("#error-msg");
+
+            // Make a POST request using AJAX
+            $.post("/login_submit.php",
+             { email: email, 
+                password: password }, 
+                function(data) {
+                // Handle the response from the server
+            
+                if (data === "success_user") {
+                    // Redirect to the user page on success
+                    window.location.href = "admin_penal.php";
+                } else {
+                    // Show the error message in the error message container
+                    errorMsgContainer.html('<span class="error-message" style="margin:10px 0; display: block; background-color:crimson; color:white; border-radius: 5px; font-size:20px; padding:10px;">Incorrect email or password!</span>');
+                
+                    // Remove the error message after 3 seconds
+                    setTimeout(function() {
+                        errorMsgContainer.empty();
+                    }, 3000);
+                
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
